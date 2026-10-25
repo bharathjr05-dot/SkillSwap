@@ -15,9 +15,7 @@ String message          = request.getParameter("message");
 if(recipientId != null && recipientSkillId != null && !recipientSkillId.isEmpty()) {
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+        conn = util.DBUtil.getConnection();
 
         PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO swap_requests (requester_id, recipient_id, requester_skill_id, recipient_skill_id, message) VALUES (?, ?, ?, ?, ?)");

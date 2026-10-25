@@ -13,15 +13,13 @@ if("POST".equals(request.getMethod())) {
     
     if(name != null && email != null && password != null) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+            Connection conn = util.DBUtil.getConnection();
             
             String sql = "INSERT INTO users (name, email, password, bio, department, year, phone) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, email);
-            stmt.setString(3, password);
+            stmt.setString(3, util.PasswordUtil.hash(password));
             stmt.setString(4, bio);
             stmt.setString(5, department);
             stmt.setString(6, year);

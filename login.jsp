@@ -8,18 +8,22 @@ if("POST".equals(request.getMethod())) {
     
     if(email != null && password != null) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+            Connection conn = util.DBUtil.getConnection();
             
-            String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+            String sql = "SELECT * FROM users WHERE email = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, email);
-            stmt.setString(2, password);
             
             ResultSet rs = stmt.executeQuery();
             
-            if(rs.next()) {
+            if(rs.next() && util.PasswordUtil.verify(password, rs.getString("password"))) {
+                if(!util.PasswordUtil.isHashed(rs.getString("password"))) {
+                    PreparedStatement updatePassword = conn.prepareStatement("UPDATE users SET password = ? WHERE id = ?");
+                    updatePassword.setString(1, util.PasswordUtil.hash(password));
+                    updatePassword.setInt(2, rs.getInt("id"));
+                    updatePassword.executeUpdate();
+                    updatePassword.close();
+                }
                 session.setAttribute("userId", rs.getString("id"));
                 session.setAttribute("userName", rs.getString("name"));
                 response.sendRedirect("dashboard.jsp");
@@ -86,26 +90,9 @@ if("POST".equals(request.getMethod())) {
                 <p style="color: #64748b;">Don't have an account? <a href="register.jsp" style="color: #2563eb;">Register here</a></p>
             </div>
             
-            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e2e8f0;">
-                <h3 style="margin-bottom: 1rem; color: #64748b; text-align: center;">Demo Accounts:</h3>
-                <div style="display: flex; gap: 1rem;">
-                    <button onclick="fillLogin('john@example.com', 'password123')" class="btn btn-secondary" style="flex: 1; font-size: 0.875rem;">
-                        John Doe
-                    </button>
-                    <button onclick="fillLogin('jane@example.com', 'password123')" class="btn btn-secondary" style="flex: 1; font-size: 0.875rem;">
-                        Jane Smith
-                    </button>
-                </div>
-            </div>
         </div>
     </main>
 
     <script src="js/main.js"></script>
-    <script>
-        function fillLogin(email, password) {
-            document.querySelector('input[name="email"]').value = email;
-            document.querySelector('input[name="password"]').value = password;
-        }
-    </script>
 </body>
 </html>

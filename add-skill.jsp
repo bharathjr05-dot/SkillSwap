@@ -19,9 +19,7 @@ if("POST".equals(request.getMethod())) {
     
     if(name != null && category != null && proficiency != null && type != null) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+            Connection conn = util.DBUtil.getConnection();
             
             String sql = "INSERT INTO skills (user_id, name, category, proficiency, type, description) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);

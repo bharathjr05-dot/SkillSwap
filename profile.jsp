@@ -37,9 +37,7 @@ if(studentId == null) {
         <%
         Connection conn = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+            conn = util.DBUtil.getConnection();
 
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
             stmt.setString(1, studentId);

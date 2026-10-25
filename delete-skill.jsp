@@ -7,9 +7,7 @@ String skillId = request.getParameter("skillId");
 if(skillId != null) {
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC","root","root");
+    conn = util.DBUtil.getConnection();
         PreparedStatement stmt = conn.prepareStatement(
             "DELETE FROM skills WHERE id = ? AND user_id = ?");
         stmt.setString(1, skillId);

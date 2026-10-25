@@ -60,9 +60,7 @@
             <div class="student-grid">
                 <%
                 try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+                    Connection conn = util.DBUtil.getConnection();
                     
                     String sql = "SELECT s.*, GROUP_CONCAT(sk.name) as skills, " +
                                 "AVG(r.rating) as avg_rating, COUNT(r.id) as review_count " +

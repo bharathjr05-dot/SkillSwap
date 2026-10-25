@@ -6,9 +6,7 @@ String type = request.getParameter("type");
 
 if(userId != null) {
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+        Connection conn = util.DBUtil.getConnection();
         
         String sql = "SELECT id, name FROM skills WHERE user_id = ?";
         if(type != null) {

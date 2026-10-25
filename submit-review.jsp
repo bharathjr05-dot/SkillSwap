@@ -16,9 +16,7 @@ if(swapId != null && targetUserId != null && ratingStr != null) {
     if(rating >= 1 && rating <= 5) {
         Connection conn = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+            conn = util.DBUtil.getConnection();
 
             // Verify the reviewer is part of this swap and it is accepted/completed
             PreparedStatement check = conn.prepareStatement(

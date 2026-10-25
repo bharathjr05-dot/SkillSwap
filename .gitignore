@@ -1,8 +1,2 @@
-# Test files
-test.jsp
-test2.jsp
-test3.jsp
-password-test.jsp
-
-# Sensitive
-skillswap.sql
+.env
+target/

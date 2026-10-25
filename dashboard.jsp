@@ -43,9 +43,7 @@ String userName = (String) session.getAttribute("userName");
                 String newPhone = request.getParameter("phone");
                 Connection connPhone = null;
                 try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    connPhone = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+                    connPhone = util.DBUtil.getConnection();
                     PreparedStatement ps = connPhone.prepareStatement("UPDATE users SET phone = ? WHERE id = ?");
                     ps.setString(1, newPhone);
                     ps.setString(2, userId);
@@ -58,9 +56,7 @@ String userName = (String) session.getAttribute("userName");
             <%
             Connection conn = null;
             try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+                conn = util.DBUtil.getConnection();
 
                 // Stats
                 String statsQuery = "SELECT " +

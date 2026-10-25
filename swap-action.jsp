@@ -13,9 +13,7 @@ String action = request.getParameter("action");
 if(requestId != null && (action.equals("accepted") || action.equals("rejected"))) {
     Connection conn = null;
     try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/skillswap?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", "root", "root");
+        conn = util.DBUtil.getConnection();
 
         // Only allow the recipient to accept/reject
         PreparedStatement stmt = conn.prepareStatement(
